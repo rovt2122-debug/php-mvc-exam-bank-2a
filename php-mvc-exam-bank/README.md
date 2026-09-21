@@ -19,7 +19,7 @@ Kumpulan 8 aplikasi web PHP native (tanpa framework) dengan arsitektur MVC, siap
 
 - **Login & Sign Up** dengan password hash (`password_hash` bcrypt) dan session
 - **CRUD lengkap** untuk setiap entitas (tambah, lihat, edit, hapus)
-- **Relasi antar tabel** dengan foreign key (lihat `ERD.png` di setiap folder)
+- **Relasi antar tabel** dengan foreign key (lihat diagram ERD Mermaid di `README.md` setiap folder)
 - **Arsitektur MVC**: `controllers/`, `models/`, `views/`, `config/`
 - **Front controller**: semua request lewat `public/index.php` dengan router sederhana (`?page=...&action=...`)
 - **PDO + prepared statements** (aman dari SQL injection)
@@ -54,7 +54,7 @@ Kumpulan 8 aplikasi web PHP native (tanpa framework) dengan arsitektur MVC, siap
 ├── public/index.php       # front controller + router
 ├── assets/                # css/js (untuk varian custom CSS)
 ├── database.sql           # skema + data seed
-└── ERD.png                # diagram relasi tabel
+└── README.md              # deskripsi, fitur, dan ERD (Mermaid)
 ```
 
 ## Catatan
