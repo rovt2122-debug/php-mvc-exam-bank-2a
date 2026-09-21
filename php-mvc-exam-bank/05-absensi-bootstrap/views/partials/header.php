@@ -1,0 +1,23 @@
+<?php $userNama = $_SESSION['user_nama'] ?? ''; ?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Absensi Siswa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand navbar-dark bg-primary mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="index.php">Absensi Siswa</a>
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item"><a class="nav-link" href="index.php?page=kelas">Kelas</a></li><li class="nav-item"><a class="nav-link" href="index.php?page=siswa">Siswa</a></li><li class="nav-item"><a class="nav-link" href="index.php?page=absensi">Absensi</a></li>
+    </ul>
+    <span class="navbar-text me-3 d-none d-md-inline"><?= htmlspecialchars($userNama) ?></span>
+    <a href="index.php?page=logout" class="btn btn-outline-light btn-sm">Logout</a>
+  </div>
+</nav>
+<main class="container pb-5">

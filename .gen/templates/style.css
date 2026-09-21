@@ -1,0 +1,104 @@
+/* style utama aplikasi */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #f4f6f8;
+  color: #1f2933;
+  min-height: 100vh;
+}
+
+a { text-decoration: none; color: #1e5aa8; }
+
+/* navbar */
+.navbar {
+  background: #1e3a5f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 24px;
+  flex-wrap: wrap;
+}
+.navbar .brand { color: #fff; font-weight: 700; font-size: 18px; }
+.navbar .menu { display: flex; gap: 4px; flex: 1; flex-wrap: wrap; }
+.navbar .menu a { color: #cfd8e3; padding: 6px 12px; border-radius: 6px; font-size: 14px; }
+.navbar .menu a:hover { background: rgba(255,255,255,.12); color: #fff; }
+.navbar .user { font-size: 14px; color: #cfd8e3; }
+.navbar .btn-logout { background: rgba(255,255,255,.15); color: #fff; padding: 6px 14px; border-radius: 6px; font-size: 13px; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+/* heading */
+h1 { font-size: 22px; margin-bottom: 4px; }
+h2 { font-size: 18px; margin-bottom: 12px; }
+.sub { color: #6b7a8d; font-size: 14px; margin-bottom: 20px; }
+.text-tengah { text-align: center; }
+
+/* card */
+.card {
+  background: #fff;
+  border: 1px solid #e4e9ee;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* table */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e4e9ee; }
+th { background: #f8fafb; font-size: 13px; color: #52606d; }
+tr:hover td { background: #fafcfd; }
+
+/* form */
+label { display: block; font-size: 14px; font-weight: 600; margin: 12px 0 4px; }
+input, select, textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  background: #fff;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: #1e3a5f; }
+
+/* button */
+.btn {
+  display: inline-block;
+  padding: 9px 16px;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary { background: #1e3a5f; color: #fff; }
+.btn-success { background: #0f9960; color: #fff; }
+.btn-danger { background: #d64545; color: #fff; }
+.btn-secondary { background: #e4e9ee; color: #334e68; }
+.btn-sm { padding: 5px 10px; font-size: 13px; }
+
+/* alert */
+.alert { padding: 10px 14px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; }
+.alert-danger { background: #fde8e8; color: #b71540; }
+.alert-info { background: #e7f1fb; color: #1e5aa8; }
+
+/* badge status */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.badge-kuning { background: #fdf3d8; color: #a8790a; }
+.badge-biru { background: #e7f1fb; color: #1e5aa8; }
+.badge-hijau { background: #e3f5eb; color: #0f9960; }
+.badge-merah { background: #fde8e8; color: #b71540; }
+.badge-abu { background: #eef1f4; color: #52606d; }
+
+/* layout bantu */
+.row { display: flex; gap: 16px; flex-wrap: wrap; }
+.row .col { flex: 1; min-width: 220px; }
+.text-kanan { text-align: right; margin-bottom: 12px; }
+.kosong { text-align: center; color: #9aa5b1; padding: 32px 0; }
+
+/* halaman login */
+.login-wrap { display: flex; justify-content: center; padding-top: 60px; }
+.login-card { width: 100%; max-width: 380px; }
