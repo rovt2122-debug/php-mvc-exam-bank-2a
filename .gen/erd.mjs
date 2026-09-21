@@ -3,19 +3,27 @@ import opentype from 'opentype.js';
 import { readFileSync } from 'fs';
 
 const ROOT = '/vercel/share/v0-project/php-mvc-exam-bank';
-const fontBuffer = readFileSync('/tmp/erd-fonts/jakarta.ttf');
-const font = opentype.parse(
-  fontBuffer.buffer.slice(fontBuffer.byteOffset, fontBuffer.byteOffset + fontBuffer.byteLength)
-);
+const loadFont = (p) => {
+  const buf = readFileSync(p);
+  return opentype.parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength));
+};
+const fontRegular = loadFont('/tmp/erd-fonts/pjs-400.ttf');
+const fontBold = loadFont('/tmp/erd-fonts/pjs-700.ttf');
 
-// render teks jadi path svg biar tidak tergantung font sistem
+// render teks jadi path svg per-karakter (bypass GSUB yang tidak didukung opentype.js)
 function textPath(text, x, y, size, fill, anchor = 'start', bold = false) {
-  const width = font.getAdvanceWidth(text, size);
+  const f = bold ? fontBold : fontRegular;
+  const scale = size / f.unitsPerEm;
+  const width = [...text].reduce((w, ch) => w + (f.charToGlyph(ch)?.advanceWidth ?? 0) * scale, 0);
   let px = x;
   if (anchor === 'middle') px = x - width / 2;
   if (anchor === 'end') px = x - width;
-  const path = font.getPath(text, px, y, size);
-  const d = path.toPathData(2);
+  let d = '';
+  for (const ch of text) {
+    const glyph = f.charToGlyph(ch);
+    if (glyph) d += glyph.getPath(px, y, size).toPathData(2);
+    px += (glyph?.advanceWidth ?? 0) * scale;
+  }
   const stroke = bold ? ` stroke="${fill}" stroke-width="0.6"` : '';
   return `<path d="${d}" fill="${fill}"${stroke}/>`;
 }
