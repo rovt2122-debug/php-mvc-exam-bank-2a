@@ -17,6 +17,32 @@ class Booking
         return $this->pdo->query($sql)->fetchAll();
     }
 
+    public function countAll()
+    {
+        return (int)$this->pdo->query("SELECT COUNT(*) FROM booking")->fetchColumn();
+    }
+
+    // ambil sebagian booking untuk pagination
+    public function page($limit, $offset)
+    {
+        $sql = "SELECT b.*, l.nama AS nama_lapangan FROM booking b
+                JOIN lapangan l ON l.id = b.lapangan_id
+                ORDER BY b.tanggal DESC, b.jam_mulai DESC
+                LIMIT ? OFFSET ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(1, (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(2, (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function hapus($id)
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM booking WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->rowCount() > 0;
+    }
+
     public function find($id)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM booking WHERE id = ?");

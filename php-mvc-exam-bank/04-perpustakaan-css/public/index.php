@@ -1,5 +1,13 @@
 <?php
+// nama session unik per app, supaya session tidak bocor antar study case
+// yang dijalankan di domain localhost yang sama
+session_name('exam04_perpus');
 session_start();
+
+// BASE_URL = path URL folder app ini, dipakai untuk mengakses assets
+// baik dari root index.php maupun public/index.php
+$scriptDir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/');
+define('BASE_URL', preg_replace('~(/public)$~', '', $scriptDir));
 
 require __DIR__ . '/../config/database.php';
 require __DIR__ . '/../models/User.php';
@@ -39,6 +47,7 @@ switch ($page) {
     case 'peminjaman-form': (new PeminjamanController($pdo))->form(); break;
     case 'peminjaman-simpan': (new PeminjamanController($pdo))->simpan(); break;
     case 'peminjaman-kembali': (new PeminjamanController($pdo))->kembali(); break;
+    case 'peminjaman-hapus': (new PeminjamanController($pdo))->hapus(); break;
 
     default: echo 'Halaman tidak ditemukan';
 }

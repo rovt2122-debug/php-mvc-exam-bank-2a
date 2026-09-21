@@ -44,8 +44,13 @@ class KelasController
 
     public function hapus()
     {
-        $this->model->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Kelas berhasil dihapus';
+        try {
+            $this->model->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Kelas berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, kelas masih dipakai di siswa
+            $_SESSION['flash_error'] = 'Kelas tidak bisa dihapus karena masih ada siswa di kelas ini';
+        }
         header('Location: index.php?page=kelas');
         exit;
     }

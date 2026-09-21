@@ -47,8 +47,13 @@ class BukuController
 
     public function hapus()
     {
-        $this->model->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Buku berhasil dihapus';
+        try {
+            $this->model->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Buku berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, buku masih dipakai di peminjaman
+            $_SESSION['flash_error'] = 'Buku tidak bisa dihapus karena masih punya riwayat peminjaman';
+        }
         header('Location: index.php?page=buku');
         exit;
     }

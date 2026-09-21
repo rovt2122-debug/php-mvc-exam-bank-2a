@@ -44,8 +44,13 @@ class KategoriController
 
     public function hapus()
     {
-        $this->model->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Kategori berhasil dihapus';
+        try {
+            $this->model->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Kategori berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, kategori masih dipakai di pengaduan
+            $_SESSION['flash_error'] = 'Kategori tidak bisa dihapus karena masih dipakai di pengaduan';
+        }
         header('Location: index.php?page=kategori');
         exit;
     }

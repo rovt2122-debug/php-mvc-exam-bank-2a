@@ -46,8 +46,13 @@ class ProdukController
 
     public function hapus()
     {
-        $this->model->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Produk berhasil dihapus';
+        try {
+            $this->model->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Produk berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, produk masih dipakai di transaksi
+            $_SESSION['flash_error'] = 'Produk tidak bisa dihapus karena sudah pernah dipakai di transaksi';
+        }
         header('Location: index.php?page=produk');
         exit;
     }

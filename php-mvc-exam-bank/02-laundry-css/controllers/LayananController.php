@@ -46,8 +46,13 @@ class LayananController
 
     public function hapus()
     {
-        $this->model->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Layanan berhasil dihapus';
+        try {
+            $this->model->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Layanan berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, layanan masih dipakai di transaksi
+            $_SESSION['flash_error'] = 'Layanan tidak bisa dihapus karena masih dipakai di transaksi';
+        }
         header('Location: index.php?page=layanan');
         exit;
     }

@@ -15,8 +15,40 @@ class TransaksiController
 
     public function index()
     {
-        $transaksi = $this->transaksiModel->all();
+        // pagination 8 data per halaman
+        $perPage = 8;
+        $totalData = $this->transaksiModel->countAll();
+        $totalHalaman = max(1, (int)ceil($totalData / $perPage));
+        $halaman = min(max(1, (int)($_GET['halaman'] ?? 1)), $totalHalaman);
+
+        $transaksi = $this->transaksiModel->page($perPage, ($halaman - 1) * $perPage);
         include __DIR__ . '/../views/transaksi/index.php';
+    }
+
+    // melunasi transaksi yang statusnya belum lunas
+    public function lunas()
+    {
+        $id = (int)($_GET['id'] ?? 0);
+        $transaksi = $this->transaksiModel->find($id);
+
+        if ($transaksi && $transaksi['status'] !== 'lunas') {
+            $this->transaksiModel->tandaiLunas($id);
+            $_SESSION['flash_sukses'] = 'Transaksi ditandai lunas';
+        }
+        header('Location: index.php?page=transaksi');
+        exit;
+    }
+
+    public function hapus()
+    {
+        $id = (int)($_GET['id'] ?? 0);
+        if ($id > 0 && $this->transaksiModel->hapus($id)) {
+            $_SESSION['flash_sukses'] = 'Transaksi berhasil dihapus';
+        } else {
+            $_SESSION['flash_error'] = 'Transaksi gagal dihapus';
+        }
+        header('Location: index.php?page=transaksi');
+        exit;
     }
 
     public function form()

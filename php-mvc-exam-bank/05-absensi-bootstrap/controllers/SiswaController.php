@@ -48,8 +48,13 @@ class SiswaController
 
     public function hapus()
     {
-        $this->siswaModel->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Siswa berhasil dihapus';
+        try {
+            $this->siswaModel->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Siswa berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, siswa masih dipakai di absensi
+            $_SESSION['flash_error'] = 'Siswa tidak bisa dihapus karena masih punya riwayat absensi';
+        }
         header('Location: index.php?page=siswa');
         exit;
     }

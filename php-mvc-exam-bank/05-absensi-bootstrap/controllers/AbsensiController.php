@@ -16,9 +16,55 @@ class AbsensiController
     public function index()
     {
         $tanggal = $_GET['tanggal'] ?? date('Y-m-d');
-        $absensi = $this->absensiModel->all($tanggal);
+
+        // pagination 8 data per halaman
+        $perPage = 8;
+        $totalData = $this->absensiModel->countAll($tanggal);
+        $totalHalaman = max(1, (int)ceil($totalData / $perPage));
+        $halaman = min(max(1, (int)($_GET['halaman'] ?? 1)), $totalHalaman);
+
+        $absensi = $this->absensiModel->page($tanggal, $perPage, ($halaman - 1) * $perPage);
         $rekap = $this->absensiModel->rekap($tanggal);
         include __DIR__ . '/../views/absensi/index.php';
+    }
+
+    public function edit()
+    {
+        $absensi = $this->absensiModel->find((int)($_GET['id'] ?? 0));
+        if (!$absensi) {
+            header('Location: index.php?page=absensi');
+            exit;
+        }
+        include __DIR__ . '/../views/absensi/edit.php';
+    }
+
+    public function update()
+    {
+        $id = (int)($_POST['id'] ?? 0);
+        $status = $_POST['status'] ?? '';
+        $jamMasuk = $_POST['jam_masuk'] ?? null;
+        $boleh = ['hadir', 'izin', 'sakit', 'alpa'];
+
+        if ($id > 0 && in_array($status, $boleh)) {
+            $this->absensiModel->update($id, $status, $jamMasuk !== '' ? $jamMasuk : null);
+            $_SESSION['flash_sukses'] = 'Absensi berhasil diupdate';
+        } else {
+            $_SESSION['flash_error'] = 'Data absensi tidak valid';
+        }
+        header('Location: index.php?page=absensi');
+        exit;
+    }
+
+    public function hapus()
+    {
+        $id = (int)($_GET['id'] ?? 0);
+        if ($id > 0 && $this->absensiModel->hapus($id)) {
+            $_SESSION['flash_sukses'] = 'Absensi berhasil dihapus';
+        } else {
+            $_SESSION['flash_error'] = 'Absensi gagal dihapus';
+        }
+        header('Location: index.php?page=absensi');
+        exit;
     }
 
     public function form()

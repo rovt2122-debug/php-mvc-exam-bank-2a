@@ -33,7 +33,15 @@ class PengaduanController
     {
         // admin lihat semua, user biasa cuma lihat pengaduannya sendiri
         $admin = ($_SESSION['user_role'] ?? '') === 'admin';
-        $pengaduan = $admin ? $this->pengaduanModel->all() : $this->pengaduanModel->all($_SESSION['user_id']);
+        $filterUser = $admin ? null : $_SESSION['user_id'];
+
+        // pagination 8 data per halaman
+        $perPage = 8;
+        $totalData = $this->pengaduanModel->countAll($filterUser);
+        $totalHalaman = max(1, (int)ceil($totalData / $perPage));
+        $halaman = min(max(1, (int)($_GET['halaman'] ?? 1)), $totalHalaman);
+
+        $pengaduan = $this->pengaduanModel->page($filterUser, $perPage, ($halaman - 1) * $perPage);
         include __DIR__ . '/../views/pengaduan/index.php';
     }
 

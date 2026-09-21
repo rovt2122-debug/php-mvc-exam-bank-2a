@@ -15,7 +15,13 @@ class StokController
 
     public function index()
     {
-        $riwayat = $this->riwayatModel->all();
+        // pagination 8 data per halaman
+        $perPage = 8;
+        $totalData = $this->riwayatModel->countAll();
+        $totalHalaman = max(1, (int)ceil($totalData / $perPage));
+        $halaman = min(max(1, (int)($_GET['halaman'] ?? 1)), $totalHalaman);
+
+        $riwayat = $this->riwayatModel->page($perPage, ($halaman - 1) * $perPage);
         include __DIR__ . '/../views/stok/index.php';
     }
 

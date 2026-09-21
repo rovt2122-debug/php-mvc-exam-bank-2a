@@ -46,8 +46,13 @@ class AnggotaController
 
     public function hapus()
     {
-        $this->model->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Anggota berhasil dihapus';
+        try {
+            $this->model->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Anggota berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, anggota masih dipakai di peminjaman
+            $_SESSION['flash_error'] = 'Anggota tidak bisa dihapus karena masih punya riwayat peminjaman';
+        }
         header('Location: index.php?page=anggota');
         exit;
     }

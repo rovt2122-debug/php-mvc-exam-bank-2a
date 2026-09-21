@@ -15,7 +15,7 @@
       <tbody>
         <?php foreach ($riwayat as $i => $r): ?>
           <tr>
-            <td><?= $i + 1 ?></td>
+            <td><?= ($halaman - 1) * $perPage + $i + 1 ?></td>
             <td><?= htmlspecialchars($r['nama_barang']) ?></td>
             <td>
               <?php if ($r['jenis'] === 'masuk'): ?>
@@ -33,5 +33,14 @@
     </table>
   <?php endif; ?>
 </div>
+
+<?php if ($totalHalaman > 1): ?>
+<div class="text-kanan" style="margin-top:12px;">
+  <?php for ($i = 1; $i <= $totalHalaman; $i++): ?>
+    <a href="index.php?page=stok&halaman=<?= $i ?>"
+       class="btn btn-sm <?= $i === $halaman ? 'btn-primary' : 'btn-secondary' ?>"><?= $i ?></a>
+  <?php endfor; ?>
+</div>
+<?php endif; ?>
 
 <?php include __DIR__ . '/../partials/footer.php'; ?>

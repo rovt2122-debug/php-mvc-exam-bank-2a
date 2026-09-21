@@ -45,8 +45,13 @@ class LapanganController
 
     public function hapus()
     {
-        $this->model->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Lapangan berhasil dihapus';
+        try {
+            $this->model->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Lapangan berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, lapangan masih dipakai di jadwal/booking
+            $_SESSION['flash_error'] = 'Lapangan tidak bisa dihapus karena masih dipakai di jadwal atau booking';
+        }
         header('Location: index.php?page=lapangan');
         exit;
     }

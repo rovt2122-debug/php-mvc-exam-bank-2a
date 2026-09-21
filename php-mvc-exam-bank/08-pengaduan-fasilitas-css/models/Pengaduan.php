@@ -29,6 +29,41 @@ class Pengaduan
         return $stmt->fetchAll();
     }
 
+    // hitung jumlah pengaduan, opsional filter per user
+    public function countAll($userId = null)
+    {
+        if ($userId !== null) {
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM pengaduan WHERE user_id = ?");
+            $stmt->execute([$userId]);
+        } else {
+            $stmt = $this->pdo->query("SELECT COUNT(*) FROM pengaduan");
+        }
+        return (int)$stmt->fetchColumn();
+    }
+
+    // ambil sebagian pengaduan untuk pagination
+    public function page($userId, $limit, $offset)
+    {
+        $sql = "SELECT p.*, k.nama AS nama_kategori, u.nama AS nama_pelapor
+                FROM pengaduan p
+                JOIN kategori k ON k.id = p.kategori_id
+                JOIN users u ON u.id = p.user_id";
+        $params = [];
+
+        if ($userId !== null) {
+            $sql .= " WHERE p.user_id = ?";
+            $params[] = $userId;
+        }
+
+        $sql .= " ORDER BY p.created_at DESC LIMIT ? OFFSET ?";
+        $params[] = (int)$limit;
+        $params[] = (int)$offset;
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
     public function find($id)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM pengaduan WHERE id = ?");

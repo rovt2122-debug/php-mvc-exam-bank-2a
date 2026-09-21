@@ -15,7 +15,13 @@ class BookingController
 
     public function index()
     {
-        $booking = $this->bookingModel->all();
+        // pagination 8 data per halaman
+        $perPage = 8;
+        $totalData = $this->bookingModel->countAll();
+        $totalHalaman = max(1, (int)ceil($totalData / $perPage));
+        $halaman = min(max(1, (int)($_GET['halaman'] ?? 1)), $totalHalaman);
+
+        $booking = $this->bookingModel->page($perPage, ($halaman - 1) * $perPage);
         include __DIR__ . '/../views/booking/index.php';
     }
 
@@ -84,6 +90,18 @@ class BookingController
         if ($booking && $booking['status'] === 'aktif') {
             $this->bookingModel->batal($id);
             $_SESSION['flash_sukses'] = 'Booking dibatalkan';
+        }
+        header('Location: index.php?page=booking');
+        exit;
+    }
+
+    public function hapus()
+    {
+        $id = (int)($_GET['id'] ?? 0);
+        if ($id > 0 && $this->bookingModel->hapus($id)) {
+            $_SESSION['flash_sukses'] = 'Booking berhasil dihapus';
+        } else {
+            $_SESSION['flash_error'] = 'Booking gagal dihapus';
         }
         header('Location: index.php?page=booking');
         exit;

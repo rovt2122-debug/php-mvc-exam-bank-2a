@@ -11,12 +11,12 @@
     <table>
       <thead>
         <tr><th>No</th><th>Pelanggan</th><th>Layanan</th><th>Berat</th><th>Total</th>
-        <th>Tanggal Masuk</th><th>Selesai</th><th>Status</th><th style="width:200px;">Ubah Status</th></tr>
+        <th>Tanggal Masuk</th><th>Selesai</th><th>Status</th><th style="width:200px;">Ubah Status</th><th></th></tr>
       </thead>
       <tbody>
         <?php foreach ($transaksi as $i => $t): ?>
           <tr>
-            <td><?= $i + 1 ?></td>
+            <td><?= ($halaman - 1) * $perPage + $i + 1 ?></td>
             <td><?= htmlspecialchars($t['nama_pelanggan']) ?></td>
             <td><?= htmlspecialchars($t['nama_layanan']) ?></td>
             <td><?= $t['berat'] ?> kg</td>
@@ -42,11 +42,23 @@
                 <button class="btn btn-sm btn-secondary">Ubah</button>
               </form>
             </td>
+            <td>
+              <a href="index.php?page=transaksi-hapus&id=<?= $t['id'] ?>" class="btn btn-sm btn-danger btn-hapus">Hapus</a>
+            </td>
           </tr>
         <?php endforeach; ?>
       </tbody>
     </table>
   <?php endif; ?>
 </div>
+
+<?php if ($totalHalaman > 1): ?>
+<div class="text-kanan" style="margin-top:12px;">
+  <?php for ($i = 1; $i <= $totalHalaman; $i++): ?>
+    <a href="index.php?page=transaksi&halaman=<?= $i ?>"
+       class="btn btn-sm <?= $i === $halaman ? 'btn-primary' : 'btn-secondary' ?>"><?= $i ?></a>
+  <?php endfor; ?>
+</div>
+<?php endif; ?>
 
 <?php include __DIR__ . '/../partials/footer.php'; ?>

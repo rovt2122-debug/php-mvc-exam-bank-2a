@@ -59,8 +59,13 @@ class JadwalController
 
     public function hapus()
     {
-        $this->jadwalModel->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Jadwal berhasil dihapus';
+        try {
+            $this->jadwalModel->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Jadwal berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, jadwal masih dipakai di booking
+            $_SESSION['flash_error'] = 'Jadwal tidak bisa dihapus karena masih dipakai di booking';
+        }
         header('Location: index.php?page=jadwal');
         exit;
     }

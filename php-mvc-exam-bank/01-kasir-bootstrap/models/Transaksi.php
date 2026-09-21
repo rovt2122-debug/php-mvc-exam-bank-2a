@@ -19,6 +19,43 @@ class Transaksi
         return $this->pdo->query($sql)->fetchAll();
     }
 
+    public function countAll()
+    {
+        return (int)$this->pdo->query("SELECT COUNT(*) FROM transaksi")->fetchColumn();
+    }
+
+    // ambil sebagian transaksi untuk pagination
+    public function page($limit, $offset)
+    {
+        $sql = "SELECT t.*, u.nama AS kasir,
+                (SELECT COALESCE(SUM(qty), 0) FROM transaksi_detail d WHERE d.transaksi_id = t.id) AS jumlah_item
+                FROM transaksi t JOIN users u ON u.id = t.user_id
+                ORDER BY t.created_at DESC
+                LIMIT ? OFFSET ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(1, (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(2, (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    // hapus transaksi beserta detailnya dalam satu database transaction
+    public function hapus($id)
+    {
+        $this->pdo->beginTransaction();
+        try {
+            $stmt = $this->pdo->prepare("DELETE FROM transaksi_detail WHERE transaksi_id = ?");
+            $stmt->execute([$id]);
+            $stmt = $this->pdo->prepare("DELETE FROM transaksi WHERE id = ?");
+            $stmt->execute([$id]);
+            $this->pdo->commit();
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+
     public function find($id)
     {
         $stmt = $this->pdo->prepare(

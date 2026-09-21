@@ -50,8 +50,13 @@ class BarangController
 
     public function hapus()
     {
-        $this->barangModel->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Barang berhasil dihapus';
+        try {
+            $this->barangModel->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Barang berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, barang masih dipakai di riwayat stok
+            $_SESSION['flash_error'] = 'Barang tidak bisa dihapus karena masih punya riwayat perubahan stok';
+        }
         header('Location: index.php?page=barang');
         exit;
     }

@@ -1,5 +1,13 @@
 <?php
+// nama session unik per app, supaya session tidak bocor antar study case
+// yang dijalankan di domain localhost yang sama
+session_name('exam01_kasir');
 session_start();
+
+// BASE_URL = path URL folder app ini, dipakai untuk mengakses assets
+// baik dari root index.php maupun public/index.php
+$scriptDir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/');
+define('BASE_URL', preg_replace('~(/public)$~', '', $scriptDir));
 
 require __DIR__ . '/../config/database.php';
 require __DIR__ . '/../models/User.php';
@@ -33,6 +41,7 @@ switch ($page) {
     case 'kasir-hapus-item': (new TransaksiController($pdo))->hapusItem(); break;
     case 'kasir-bayar': (new TransaksiController($pdo))->bayar(); break;
     case 'riwayat': (new TransaksiController($pdo))->riwayat(); break;
+    case 'riwayat-hapus': (new TransaksiController($pdo))->hapus(); break;
     case 'transaksi-detail': (new TransaksiController($pdo))->detail(); break;
 
     default: echo 'Halaman tidak ditemukan';

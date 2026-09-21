@@ -17,7 +17,7 @@
         <?php endif; ?>
         <?php foreach ($booking as $i => $b): ?>
           <tr>
-            <td><?= $i + 1 ?></td>
+            <td><?= ($halaman - 1) * $perPage + $i + 1 ?></td>
             <td><?= htmlspecialchars($b['nama_lapangan']) ?></td>
             <td><?= date('d/m/Y', strtotime($b['tanggal'])) ?></td>
             <td><?= substr($b['jam_mulai'], 0, 5) ?> - <?= substr($b['jam_selesai'], 0, 5) ?></td>
@@ -29,10 +29,11 @@
               ?>
               <span class="badge <?= $badge[$b['status']] ?>"><?= $b['status'] ?></span>
             </td>
-            <td>
+            <td style="white-space: nowrap;">
               <?php if ($b['status'] === 'aktif'): ?>
                 <a href="index.php?page=booking-batal&id=<?= $b['id'] ?>" class="btn btn-outline-danger btn-sm">Batalkan</a>
               <?php endif; ?>
+              <a href="index.php?page=booking-hapus&id=<?= $b['id'] ?>" class="btn btn-danger btn-sm btn-hapus">Hapus</a>
             </td>
           </tr>
         <?php endforeach; ?>
@@ -40,5 +41,17 @@
     </table>
   </div>
 </div>
+
+<?php if ($totalHalaman > 1): ?>
+<nav class="mt-3">
+  <ul class="pagination pagination-sm justify-content-center mb-0">
+    <?php for ($i = 1; $i <= $totalHalaman; $i++): ?>
+      <li class="page-item <?= $i === $halaman ? 'active' : '' ?>">
+        <a class="page-link" href="index.php?page=booking&halaman=<?= $i ?>"><?= $i ?></a>
+      </li>
+    <?php endfor; ?>
+  </ul>
+</nav>
+<?php endif; ?>
 
 <?php include __DIR__ . '/../partials/footer.php'; ?>

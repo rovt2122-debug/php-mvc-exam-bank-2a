@@ -16,7 +16,7 @@
       <tbody>
         <?php foreach ($peminjaman as $i => $p): ?>
           <tr>
-            <td><?= $i + 1 ?></td>
+            <td><?= ($halaman - 1) * $perPage + $i + 1 ?></td>
             <td><?= htmlspecialchars($p['judul']) ?></td>
             <td><?= htmlspecialchars($p['nama_anggota']) ?></td>
             <td><?= $p['tanggal_pinjam'] ?></td>
@@ -30,10 +30,12 @@
                 <span class="badge badge-hijau">kembali</span>
               <?php endif; ?>
             </td>
-            <td>
+            <td style="white-space: nowrap;">
               <?php if ($p['status'] === 'dipinjam'): ?>
                 <a href="index.php?page=peminjaman-kembali&id=<?= $p['id'] ?>" class="btn btn-sm btn-success">Kembalikan</a>
               <?php endif; ?>
+              <a href="index.php?page=peminjaman-form&id=<?= $p['id'] ?>" class="btn btn-sm btn-secondary">Edit</a>
+              <a href="index.php?page=peminjaman-hapus&id=<?= $p['id'] ?>" class="btn btn-sm btn-danger btn-hapus">Hapus</a>
             </td>
           </tr>
         <?php endforeach; ?>
@@ -41,5 +43,14 @@
     </table>
   <?php endif; ?>
 </div>
+
+<?php if ($totalHalaman > 1): ?>
+<div class="text-kanan" style="margin-top:12px;">
+  <?php for ($i = 1; $i <= $totalHalaman; $i++): ?>
+    <a href="index.php?page=peminjaman&halaman=<?= $i ?>"
+       class="btn btn-sm <?= $i === $halaman ? 'btn-primary' : 'btn-secondary' ?>"><?= $i ?></a>
+  <?php endfor; ?>
+</div>
+<?php endif; ?>
 
 <?php include __DIR__ . '/../partials/footer.php'; ?>

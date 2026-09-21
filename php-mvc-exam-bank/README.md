@@ -18,10 +18,13 @@ Kumpulan 8 aplikasi web PHP native (tanpa framework) dengan arsitektur MVC, siap
 ## Fitur Bersama
 
 - **Login & Sign Up** dengan password hash (`password_hash` bcrypt) dan session
+- **Session terisolasi per app** (`session_name()` unik) — login di satu study case tidak bocor ke study case lain
 - **CRUD lengkap** untuk setiap entitas (tambah, lihat, edit, hapus)
+- **Hapus aman**: data yang masih dipakai di tabel lain tidak bisa dihapus, muncul pesan error ramah (bukan fatal error FK)
+- **Pagination 8 data per halaman** di halaman transaksi/riwayat
 - **Relasi antar tabel** dengan foreign key (lihat diagram ERD Mermaid di `README.md` setiap folder)
 - **Arsitektur MVC**: `controllers/`, `models/`, `views/`, `config/`
-- **Front controller**: semua request lewat `public/index.php` dengan router sederhana (`?page=...&action=...`)
+- **Front controller**: semua request lewat `index.php` di root app (yang meneruskan ke `public/index.php`) dengan router sederhana (`?page=...&action=...`)
 - **PDO + prepared statements** (aman dari SQL injection)
 - **Output escaping** dengan `htmlspecialchars` di semua view
 
@@ -37,6 +40,16 @@ Kumpulan 8 aplikasi web PHP native (tanpa framework) dengan arsitektur MVC, siap
    php -S localhost:8000 -t public
    ```
 4. Buka `http://localhost:8000` dan login.
+
+### Akses via Laragon/XAMPP (subfolder di localhost)
+
+Karena tiap app punya `index.php` di root, URL-nya tidak perlu menyertakan `/public/`:
+
+```
+http://localhost/exam-bank/01-kasir-bootstrap/
+```
+
+Akses lewat `http://localhost/exam-bank/01-kasir-bootstrap/public/index.php` juga masih bisa.
 
 ### Akun Demo (semua aplikasi)
 

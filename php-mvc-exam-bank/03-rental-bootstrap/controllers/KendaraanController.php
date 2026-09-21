@@ -46,8 +46,13 @@ class KendaraanController
 
     public function hapus()
     {
-        $this->model->delete($_GET['id'] ?? 0);
-        $_SESSION['flash_sukses'] = 'Kendaraan berhasil dihapus';
+        try {
+            $this->model->delete($_GET['id'] ?? 0);
+            $_SESSION['flash_sukses'] = 'Kendaraan berhasil dihapus';
+        } catch (PDOException $e) {
+            // kode 23000 = pelanggaran foreign key, kendaraan masih dipakai di transaksi
+            $_SESSION['flash_error'] = 'Kendaraan tidak bisa dihapus karena masih punya riwayat transaksi';
+        }
         header('Location: index.php?page=kendaraan');
         exit;
     }

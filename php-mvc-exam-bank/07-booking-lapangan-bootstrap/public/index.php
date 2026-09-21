@@ -1,5 +1,13 @@
 <?php
+// nama session unik per app, supaya session tidak bocor antar study case
+// yang dijalankan di domain localhost yang sama
+session_name('exam07_booking');
 session_start();
+
+// BASE_URL = path URL folder app ini, dipakai untuk mengakses assets
+// baik dari root index.php maupun public/index.php
+$scriptDir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/');
+define('BASE_URL', preg_replace('~(/public)$~', '', $scriptDir));
 
 require __DIR__ . '/../config/database.php';
 require __DIR__ . '/../models/User.php';
@@ -39,6 +47,7 @@ switch ($page) {
     case 'booking-form': (new BookingController($pdo))->form(); break;
     case 'booking-simpan': (new BookingController($pdo))->simpan(); break;
     case 'booking-batal': (new BookingController($pdo))->batal(); break;
+    case 'booking-hapus': (new BookingController($pdo))->hapus(); break;
 
     default: echo 'Halaman tidak ditemukan';
 }
