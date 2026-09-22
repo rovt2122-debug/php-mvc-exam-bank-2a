@@ -1,0 +1,3 @@
+<?php
+class FilmController {private $m;public function __construct($p){$this->m=new Film($p);}public function index(){$films=$this->m->all();include __DIR__.'/../views/film/index.php';}public function form(){$film=$this->m->find((int)($_GET['id']??0));include __DIR__.'/../views/film/form.php';}public function save(){$d=$_POST;$id=(int)($_POST['id']??0);if($id)$this->m->update($id,$d);else$this->m->save($d);header('Location: index.php?page=film');exit;}public function delete(){try{$this->m->delete((int)$_GET['id']);$_SESSION['flash']='Film berhasil dihapus';}catch(PDOException $e){$_SESSION['flash']='Film tidak bisa dihapus karena sudah memiliki jadwal';}header('Location: index.php?page=film');exit;}}
+?>
