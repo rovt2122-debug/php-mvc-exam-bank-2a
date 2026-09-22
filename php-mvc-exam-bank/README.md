@@ -1,6 +1,6 @@
 # PHP MVC Exam Bank
 
-Kumpulan 9 aplikasi web PHP native (tanpa framework) dengan arsitektur MVC, siap dipakai sebagai bahan ujian/praktikum. Setiap folder adalah aplikasi mandiri dengan database, ERD, dan fitur CRUD lengkap.
+Kumpulan 10 aplikasi web PHP native (tanpa framework) dengan arsitektur MVC, siap dipakai sebagai bahan ujian/praktikum. Setiap folder adalah aplikasi mandiri dengan database, ERD, dan fitur CRUD lengkap.
 
 ## Daftar Aplikasi
 
@@ -15,6 +15,7 @@ Kumpulan 9 aplikasi web PHP native (tanpa framework) dengan arsitektur MVC, siap
 | 7 | `07-booking-lapangan-bootstrap` | Booking Lapangan | Bootstrap 5 | users, lapangan, jadwal, booking |
 | 8 | `08-pengaduan-fasilitas-css` | Pengaduan Fasilitas | Custom CSS | users, kategori, pengaduan |
 | 9 | `09-bioskop-bootstrap` | Booking Tiket Bioskop | Bootstrap 5 | users, film, jadwal, booking |
+| 10 | `10-parkir-bootstrap` | Sistem Parkir | Custom CSS | users, parkir |
 
 Study case 09 menambahkan katalog film, jadwal tayang, validasi kapasitas kursi, kode booking otomatis, dan pembatalan tiket.
 

@@ -1,0 +1,2 @@
+<?php
+class User{private PDO $pdo;function __construct(PDO $pdo){$this->pdo=$pdo;}function byEmail($email){$s=$this->pdo->prepare('SELECT * FROM users WHERE email=?');$s->execute([$email]);return $s->fetch();}function create($nama,$email,$password,$role='user'){ $s=$this->pdo->prepare('INSERT INTO users(nama,email,password,role) VALUES(?,?,?,?)');return $s->execute([$nama,$email,$password,$role]);}}
