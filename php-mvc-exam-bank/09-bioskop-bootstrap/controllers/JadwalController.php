@@ -1,0 +1,3 @@
+<?php
+class JadwalController {private $m;private $films;public function __construct($p){$this->m=new Jadwal($p);$this->films=new Film($p);}public function index(){$jadwal=$this->m->all();include __DIR__.'/../views/jadwal/index.php';}public function form(){$films=$this->films->all();include __DIR__.'/../views/jadwal/form.php';}public function save(){$this->m->save($_POST);header('Location: index.php?page=jadwal');exit;}public function delete(){try{$this->m->delete((int)$_GET['id']);$_SESSION['flash']='Jadwal berhasil dihapus';}catch(PDOException $e){$_SESSION['flash']='Jadwal tidak bisa dihapus karena sudah memiliki booking';}header('Location: index.php?page=jadwal');exit;}}
+?>
